@@ -4,14 +4,6 @@ import './directory.styles.scss';
 
 import MenuItem from '../menu-item/menu-item.component';
 
-// const Directory = () => (
-//     <div className='directory-menu'>
-//         <MenuItem title='HATS' />
-//         <MenuItem title='JACKETS' />
-//         <MenuItem title='WOMENS' />
-//         <MenuItem title='MENS' />
-//     </div>
-// );
 class Directory extends React.Component {
     constructor () {
         super();
@@ -58,8 +50,8 @@ class Directory extends React.Component {
         return (
             <div className='directory-menu'>
                 {
-                    this.state.sections.map(({title, imageUrl, size, id}) => (
-                        <MenuItem title={title} imageUrl={imageUrl} key={id} size={size} />
+                    this.state.sections.map(({ id, ...otherSectionProps }) => (
+                        <MenuItem key={id} {...otherSectionProps} />
                     ))
                 }
             </div>
