@@ -1,32 +1,42 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { addItem, clearItemFromCart, removeItem } from '../../redux/cart/cart.actions';
+import { useContext } from 'react';
 
-import './checkout-item.styles.scss';
+import { CartContext } from '../../contexts/cart.context';
 
-const CheckoutItem = ({ cartItem, addItem, clearItem, removeItem }) => {
+import {
+    Arrow,
+    BaseSpan, 
+    CheckoutItemContainer, 
+    ImageContainer, 
+    Quantity, 
+    RemoveButton, 
+    Value 
+} from './checkout-item.styles';
+
+const CheckoutItem = ({ cartItem }) => {
     const { name, imageUrl, price, quantity } = cartItem;
+
+    const { clearItemsFromCart, addItemToCart, removeItemFromCart } = 
+        useContext(CartContext);
+
+    const clearItemsHandler = () => clearItemsFromCart(cartItem);
+    const addItemHandler = () => addItemToCart(cartItem);
+    const removeItemHandler = () => removeItemFromCart(cartItem);
+
     return (
-        <div className='checkout-item'>
-            <div className='image-container'>
-                <img src={imageUrl} alt="item" />
-            </div>
-            <span className='name'>{name}</span>
-            <span className='quantity'>
-                <div className='arrow' onClick={() => removeItem(cartItem)}>&#10094;</div>
-                <span className='value'>{quantity}</span>
-                <div className='arrow' onClick={() => addItem(cartItem)}>&#10095;</div>
-            </span>
-            <span className='price'>{price}</span>
-            <span className='remove-button' onClick={() => clearItem(cartItem)}>&#10005;</span>
-        </div>
+        <CheckoutItemContainer>
+            <ImageContainer>
+                <img src={imageUrl} alt={`${name}`} />
+            </ImageContainer>
+            <BaseSpan>{name}</BaseSpan>
+            <Quantity>
+                <Arrow onClick={removeItemHandler}>&#10094;</Arrow>
+                <Value>{quantity}</Value>
+                <Arrow onClick={addItemHandler}>&#10095;</Arrow>
+            </Quantity>
+            <BaseSpan>{price}</BaseSpan>
+            <RemoveButton onClick={clearItemsHandler}>&#10005;</RemoveButton>
+        </CheckoutItemContainer>
     );
 };
 
-const mapDispatchToProps = dispatch => ({
-    addItem: item => dispatch(addItem(item)),
-    clearItem: item => dispatch(clearItemFromCart(item)),
-    removeItem: item => dispatch(removeItem(item))
-});
-
-export default connect(null, mapDispatchToProps)(CheckoutItem);
+export default CheckoutItem;
