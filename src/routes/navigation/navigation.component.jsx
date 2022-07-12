@@ -16,6 +16,7 @@ const Navigation = () => {
     const currentUser = useSelector(selectCurrentUser);
     const { isCartOpen } = useContext(CartContext);
 
+    console.log(currentUser);
     return (
         <Fragment>
             <NavigationContainer>
