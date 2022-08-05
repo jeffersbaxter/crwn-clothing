@@ -3,22 +3,27 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import { CartProvider } from './contexts/cart.context';
-import { store } from './store/store';
+import { store, persistor } from './store/store';
 
 import './index.css';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <CartProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
           <App />
-        </CartProvider>
-      </BrowserRouter>
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
+
+/**
+ * NOTE:
+ *      StrictMode prevents useselector from working, which prevents components from rerendering
+ */
